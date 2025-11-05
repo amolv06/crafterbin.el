@@ -26,8 +26,9 @@
   (interactive "r")
   (let ((text (buffer-substring-no-properties start end))
         (temp-file (concat (make-temp-file "crafterbin-") ".txt")))
-    (with-temp-file temp-file
-      (insert text))
+    (let ((coding-system-for-write 'raw-text))
+	 (with-temp-file temp-file
+	   (insert text)))
     (crafterbin-upload-file temp-file)
     (delete-file temp-file)))
 
@@ -76,6 +77,13 @@
               (message "Error uploading: %s" output)))
           (kill-buffer temp-buffer))))))
 
+(defun crafterbin-upload-kill-ring ()
+  (interactive)
+  (with-temp-buffer
+  (insert (current-kill 0))
+  (mark-whole-buffer)
+  (crafterbin-upload)))
+   
 (defun crafterbin-upload ()
   "Upload to CrafterBin. If region is active, upload region, otherwise prompt for file."
   (interactive)
