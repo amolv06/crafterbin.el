@@ -81,8 +81,7 @@
   (interactive)
   (with-temp-buffer
   (insert (current-kill 0))
-  (mark-whole-buffer)
-  (crafterbin-upload)))
+  (crafterbin-upload-region (point-min) (point-max))))
    
 (defun crafterbin-upload ()
   "Upload to CrafterBin. If region is active, upload region, otherwise prompt for file."
